@@ -25,3 +25,6 @@ monetary_df = monetary_df.rename(columns={'Total': 'Monetary'})
 #Merging
 rfm_df = pd.merge(recency_df, frequency_df, on='CustomerID')
 rfm_df = pd.merge(rfm_df, monetary_df, on='CustomerID')
+
+rfm_df.to_excel(os.path.join(directory, '..', 'data', '3-Online Retail_RFM.xlsx'), index=False)
+print(rfm_df)
