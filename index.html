@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #F4F6F8; /* Gris perlado para descansar la vista */
+            background-color: #F4F6F8;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,18 +21,18 @@
         .dashboard-container {
             background-color: #FFFFFF;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Sombra suave */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             padding: 32px;
             width: 95%;
-            max-width: 1200px; /* Ancho máximo para pantallas grandes */
+            max-width: 1200px;
             box-sizing: border-box;
             margin: 40px 0;
         }
 
-        /* Encabezado minimalista */
+        /* Encabezado */
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .header h1 {
@@ -41,18 +41,53 @@
             font-weight: 600;
             margin: 0;
             letter-spacing: -0.5px;
+            transition: opacity 0.3s ease;
         }
 
-        /* Contenedor responsivo para el iframe (Mantiene proporción 16:9) */
+        /* Barra de navegación personalizada */
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .nav-button {
+            background-color: #F4F6F8;
+            border: 1px solid #EAEAEA;
+            color: #666666;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .nav-button:hover {
+            background-color: #EAEAEA;
+            color: #333333;
+        }
+
+        .nav-button.active {
+            background-color: #005B96;
+            color: #FFFFFF;
+            border-color: #005B96;
+            box-shadow: 0 4px 12px rgba(0, 91, 150, 0.2);
+        }
+
+        /* --- TRUCO CSS PARA CORTE --- */
         .iframe-wrapper {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
+            /* Reducimos sutilmente el padding inferior de 56.25% (16:9) a 53.5% */
+            padding-bottom: 53.5%; 
             height: 0;
-            overflow: hidden;
+            overflow: hidden; /* Esto recorta lo que sobresalga */
             border-radius: 8px;
             border: 1px solid #EAEAEA;
-            background-color: #FAFAFA; /* Color de carga temporal */
+            background-color: #FAFAFA;
         }
 
         .iframe-wrapper iframe {
@@ -60,7 +95,8 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            /* Hacemos el iframe un 5% más alto para empujar la barra gris hacia abajo */
+            height: 105%; 
             border: none;
         }
     </style>
@@ -69,11 +105,17 @@
 
     <div class="dashboard-container">
         <div class="header">
-            <h1>Customer Segmentation using K-Means Clustering</h1>
+            <h1 id="dashboard-title">Customer Segmentation using K-Means Clustering</h1>
+        </div>
+
+        <div class="nav-bar">
+            <button id="btn-page1" class="nav-button active" onclick="changePage(1)">Business RFM</button>
+            <button id="btn-page2" class="nav-button" onclick="changePage(2)">Methods Comparison</button>
         </div>
         
         <div class="iframe-wrapper">
             <iframe 
+                id="dashboard-frame"
                 title="RFM_dashboard" 
                 src="https://app.powerbi.com/view?r=eyJrIjoiYzMyYjAyMjctM2Q4ZC00OGFmLWE0OTEtY2ZjNTdhYjMwODYyIiwidCI6IjQ2MmMwMmM1LTQ2NTUtNDJlZC1hNGRjLWVmNGU1MTdiNjQ1NCIsImMiOjR9&pageName=5b03e068a86cb0289980" 
                 allowFullScreen="true">
@@ -81,5 +123,33 @@
         </div>
     </div>
 
+    <script>
+        const page1Url = "https://app.powerbi.com/view?r=eyJrIjoiYzMyYjAyMjctM2Q4ZC00OGFmLWE0OTEtY2ZjNTdhYjMwODYyIiwidCI6IjQ2MmMwMmM1LTQ2NTUtNDJlZC1hNGRjLWVmNGU1MTdiNjQ1NCIsImMiOjR9&pageName=5b03e068a86cb0289980";
+        const page2Url = "https://app.powerbi.com/view?r=eyJrIjoiYzMyYjAyMjctM2Q4ZC00OGFmLWE0OTEtY2ZjNTdhYjMwODYyIiwidCI6IjQ2MmMwMmM1LTQ2NTUtNDJlZC1hNGRjLWVmNGU1MTdiNjQ1NCIsImMiOjR9&pageName=2f2497869a3091b801da";
+
+        function changePage(pageNum) {
+            const iframe = document.getElementById('dashboard-frame');
+            const title = document.getElementById('dashboard-title');
+            const btn1 = document.getElementById('btn-page1');
+            const btn2 = document.getElementById('btn-page2');
+
+            title.style.opacity = 0;
+
+            setTimeout(() => {
+                if (pageNum === 1) {
+                    iframe.src = page1Url;
+                    title.innerText = "Customer Segmentation using K-Means Clustering";
+                    btn1.classList.add('active');
+                    btn2.classList.remove('active');
+                } else {
+                    iframe.src = page2Url;
+                    title.innerText = "Methods Comparison: Heuristic vs. K-Means";
+                    btn2.classList.add('active');
+                    btn1.classList.remove('active');
+                }
+                title.style.opacity = 1;
+            }, 150);
+        }
+    </script>
 </body>
 </html>
