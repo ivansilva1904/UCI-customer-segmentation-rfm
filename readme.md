@@ -18,3 +18,17 @@
 ### At this point I only knew about the rule-based method to rank customers, but while researching about this I found out about the KMeans approach to group datasets based in their behavior using the Scikit-learn library in python. I liked the idea of trying that library and, because this is a project to gain experience, I decided to apply the KMeans algorithm to the main page of the dashboard and dedicate a different page to compare how both methods rank the customers. Having said that, I ran into a lot of problems which I will explain in the "KMeans methodology problems" section.
 ### Starting with the rule-based method, I split the dataset obtained in the previous stage into quintiles with pandas and assigned a score to each RFM category from 1 to 5 based in the quintil they fell on. I also wrote the score concatenated into the same column and saved that as an independent file in data.
 ### For the KMeans method, I first applied a logarithmic transformation to the data to ensure the values don't present a big asymmetry between one another. Then I standarized the values with Scikit-learn and trained the KMeans model with a fixated number of cluster, for which I chose 4. All of this was saved in another file in data.
+
+## Group segmentation
+### Once I had all the customers ranked, I used the groupby method again to check the average values for each RFM column in the 4 clusters previously created. Based in my analysis of the next table:
+| Cluster | Recency mean | Frequency mean | Monetary mean |
+| :--- | :--- | :--- | :--- |
+| 0 | 18.124 | 2.148 | 551.819 |
+| 1 | 12.131 | 13.713 | 8074.266 |
+| 2 | 71.084 | 4.083 | 1802.829 |
+| 3 | 182.496 | 1.318 | 343.450 |
+### I come out with 4 groups for the dataset:
+* Cluster 1: Loyal client
+* Cluster 0: New client
+* Cluster 2: At risk client
+* Cluster 3: Inactive client
