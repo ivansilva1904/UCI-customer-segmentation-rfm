@@ -9,6 +9,7 @@ The first step was to download the raw dataset from [this repository](https://ar
 * Quantity: negative values
 * UnitPrice: null values
 * InvoiceNo: alphanumeric values (which had a 'C' meaning "Cancelled")
+
 Once I knew all the columns with problems, I counted and filtered them out of the dataset using the Pandas library and saved the new file in the data directoy.
 
 ## Creating the RFM columns
@@ -27,6 +28,7 @@ Once I had all the customers ranked, I used the groupby method again to check th
 | 1 | 12.131 | 13.713 | 8074.266 |
 | 2 | 71.084 | 4.083 | 1802.829 |
 | 3 | 182.496 | 1.318 | 343.450 |
+
 I came out with 4 groups for the dataset:
 * Cluster 1: Loyal client
 * Cluster 0: New client
